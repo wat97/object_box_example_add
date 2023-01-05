@@ -26,14 +26,14 @@ class ObjectBox {
     boxNotification = Box<ModelNotification>(store);
 
     if (boxNotification.isEmpty()) {
-      _putDemoData();
+      putDemoData();
     }
 
     final qBuilder = boxNotification.query();
     notificationStream = qBuilder.watch(triggerImmediately: true);
   }
 
-  void _putDemoData() {
+  void putDemoData() {
     ModelNotification model = ModelNotification(
       id: 0,
       title: "Welcome",
@@ -63,6 +63,10 @@ class ObjectBox {
       print("eventDa ${event.toString()}");
       return event.find().last;
     });
+  }
+
+  clearList() {
+    boxNotification.removeAll();
   }
 
   /// Create an instance of ObjectBox to use throughout the app.

@@ -43,37 +43,63 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: ListNotification(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          List<ModelNotification> listModel =
-              await objectBox.getAllNotification().first;
-
-          ModelNotification rowModel = await objectBox.getFirstId().first;
-          ModelNotification rowFirst = listModel.last;
-          int count = listModel.length + 1;
-
-          String title = "${rowFirst.title} [{count}]";
-          String detail = "${rowFirst.detail} [{count}]";
-          title = title.replaceAll("{count}", "${count}");
-          detail = detail.replaceAll("{count}", "${count}");
-          DateTime date = DateTime.now();
-          ModelNotification added = ModelNotification(
-            title: title,
-            detail: detail,
-          );
-          print(rowFirst.toJson());
-          print(added.toJson());
-          // result.forEach((element) {
-          //   print("resultEach ${element}");
-          // });
-          print("rowModel = ${rowModel.toJson()}");
-          // setState(() {
-          objectBox.addNotification(added);
-          // });
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Container(
+        margin: EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        alignment: Alignment.bottomLeft,
+        child: Row(
+          children: [
+            FloatingActionButton(
+              onPressed: () async => onClearFunction(),
+              tooltip: 'Clear',
+              child: const Icon(Icons.clear),
+            ), // This trailing comma makes auto-formatting nicer for build methods.
+            Spacer(),
+            FloatingActionButton(
+              onPressed: () async => onPressFunction(),
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            ), // This trailing comma makes auto-formatting nicer for build methods.
+          ],
+        ),
+      ),
     );
+  }
+
+  onClearFunction() async {
+    await objectBox.clearList();
+  }
+
+  onPressFunction() async {
+    List<ModelNotification> listModel =
+        await objectBox.getAllNotification().first;
+    if (listModel.isEmpty) {
+      objectBox.putDemoData();
+      return;
+    }
+
+    ModelNotification rowModel = await objectBox.getFirstId().first;
+    ModelNotification rowFirst = listModel.last;
+    int count = listModel.length + 1;
+
+    String title = "${rowFirst.title} [{count}]";
+    String detail = "${rowFirst.detail} [{count}]";
+    title = title.replaceAll("{count}", "${count}");
+    detail = detail.replaceAll("{count}", "${count}");
+    DateTime date = DateTime.now();
+    ModelNotification added = ModelNotification(
+      title: title,
+      detail: detail,
+    );
+    print(rowFirst.toJson());
+    print(added.toJson());
+    // result.forEach((element) {
+    //   print("resultEach ${element}");
+    // });
+    print("rowModel = ${rowModel.toJson()}");
+    // setState(() {
+    objectBox.addNotification(added);
+    // });
   }
 }
