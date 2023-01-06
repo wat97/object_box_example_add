@@ -7,7 +7,10 @@
         {
             "name": "test_object_box",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--verbose"
+            ]
         },
         {
             "name": "test_object_box (profile mode)",
